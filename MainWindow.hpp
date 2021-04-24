@@ -22,13 +22,13 @@ public:
 
 private slots:
 	void on_pushButton_clicked();
-	void operationIsDone();
+	void operationIsDone(); // слот, принимающий сигнал об окончании работы потока
 
 private:
 	Ui::MainWindow *ui;
 	bool isInProgress = false;
-	size_t completedOperations = 0;
-	size_t requiredOperations = 0;
+	size_t completedOperations = 0; // кол-во завершенных потоков
+	size_t requiredOperations = 0; // кол-во запрошенных потоков
 
 };
 #endif // MAINWINDOW_HPP

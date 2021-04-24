@@ -10,7 +10,7 @@ public:
 	MyModel() = default;
 
 private slots:
-	void setText(const unsigned long long& index, const QString& string);
+	void setText(const unsigned long long& index, const QString& string); // слот, принимающий сигнал для обновления состояния в таблице
 };
 
 #endif // MYMODEL_HPP

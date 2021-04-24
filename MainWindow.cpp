@@ -16,7 +16,7 @@ MainWindow::~MainWindow()
 void MainWindow::operationIsDone()
 {
 	++this->completedOperations;
-	if (this->completedOperations == this->requiredOperations)
+	if (this->completedOperations == this->requiredOperations) // считаем кол-во завершенных потоков, чтобы разблокировать кнопку запуска
 	{
 		this->isInProgress = false;
 		this->completedOperations = 0;
@@ -24,11 +24,11 @@ void MainWindow::operationIsDone()
 	}
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_pushButton_clicked() // если нажата кнопка
 {
 	if (this->isInProgress == true)
 	{
-		QMessageBox::warning(this, "Warning", "In progress");
+		QMessageBox::warning(this, "Warning", "In progress"); // блокируем кнопку запуска, если процесс уже идет
 	}
 	else
 	{
@@ -40,17 +40,20 @@ void MainWindow::on_pushButton_clicked()
 		}
 		if (this->requiredOperations > 10)
 			QMessageBox::warning(this, "Warning", "The computer can be very slow");
-		MyModel* model = new MyModel();
+		MyModel* model = new MyModel(); // создаем модель для таблицы
 		QThreadPool::globalInstance()->setMaxThreadCount(this->requiredOperations);
 		for (size_t i = 0; i < this->requiredOperations; ++i)
 		{
 			SomeSeriousFunc* ssf = new SomeSeriousFunc();
 			QStandardItem* row = new QStandardItem("Trying to start...");
-			model->setItem(i, 0, row);
+			model->setItem(i, 0, row); // добавляем в модель строку
+			// подключаем сигналы потоков к слотам mainwindow
 			QObject::connect((QObject*)ssf, SIGNAL(newStateNotify(const unsigned long long&, const QString&)), model, SLOT(setText(const unsigned long long&, const QString&)));
 			QObject::connect((QObject*)ssf, SIGNAL(operationIsDoneNotify()), this, SLOT(operationIsDone()));
+			// запускаем поток
 			QThreadPool::globalInstance()->start(ssf);
 		}
+		// заполняем таблицу и настраиваем ее
 		model->setHeaderData(0, Qt::Horizontal, "Threads");
 		ui->tableView->setModel(model);
 		ui->tableView->setColumnWidth(0, ui->tableView->width());
