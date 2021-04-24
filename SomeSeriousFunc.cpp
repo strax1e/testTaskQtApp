@@ -13,7 +13,7 @@ void SomeSeriousFunc::run()
 		{
 			size_t progress = (double(i) / N) * 100;
 			QMutexLocker locker(&SomeSeriousFunc::mutex);
-			emit newStateNotify(myIndex, QString::fromStdString(std::to_string(progress) + "% (" + std::to_string(i) + " of " + std::to_string(N) + ")")); // возбуждаем сигнал о том, что пора менять запись в таблице
+			emit newStateNotify(myIndex, QString("%0% (%1 of %2)").arg(progress).arg(i).arg(N)); // возбуждаем сигнал о том, что пора менять запись в таблице
 		}
 	}
 	--SomeSeriousFunc::counterOfCalls;
