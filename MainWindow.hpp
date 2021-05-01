@@ -26,9 +26,9 @@ private slots:
 
 private:
 	Ui::MainWindow *ui;
-	bool isInProgress = false;
 	size_t completedOperations = 0; // кол-во завершенных потоков
 	size_t requiredOperations = 0; // кол-во запрошенных потоков
+	bool isInProgress = false;
 
 };
 #endif // MAINWINDOW_HPP
